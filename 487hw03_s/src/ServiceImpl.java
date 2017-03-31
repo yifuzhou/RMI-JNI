@@ -2,13 +2,16 @@ import java.rmi.server.*;
 //import java.rmi.RemoteException;  
     import java.rmi.server.UnicastRemoteObject;  
     public class ServiceImpl extends UnicastRemoteObject implements IService {  
+    	public String ID;
      
-        public ServiceImpl() throws Exception {  
-            super();  
+        public ServiceImpl(String ID) throws Exception {  
+        	super(); 
+        	this.ID = ID;
+            
         }  
       
-        public int add(int a, int b) throws Exception {  
-            return a + b;  
+        public String getID() throws Exception {  
+            return ID;  
         }  
         
 //        public static void main(String[] args) throws Exception
