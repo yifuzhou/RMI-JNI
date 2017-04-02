@@ -3,6 +3,7 @@
 
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 
 public class Client {
@@ -12,17 +13,32 @@ public class Client {
 		//String port = "22";
 		
 		int beacon = Integer.parseInt(port);
+		
+		ClientImpl impl = new ClientImpl();
+		
+		 Registry registry = LocateRegistry.getRegistry();
+	     registry.bind("CMDDD", impl);
+	     System.out.println("Cmd Start!");
+	     
 		while (true) {
 				System.out.println(GlobalValue.canStartCmdRegister);
-    		 IService obj = (IService)Naming.lookup("LISTENER");
-        	 obj.BeaconListener(beacon);
-        	 System.out.println(GlobalValue.canStartCmdRegister);
+    		 IService obj = (IService)Naming.lookup("BBBLISTENER");
+        	 boolean isInList = obj.BeaconListener(beacon);
         	 
-        	 if (GlobalValue.canStartCmdRegister) {
-        		 System.out.println("Before Cmd");
-        		 //CmdRegister c = new CmdRegister();
-        		 //c.start();
-        	 }
+        	 System.out.println("This is isInList :" + isInList);
+        	 
+        	 System.out.println(GlobalValue.canStartCmdRegister);
+//        	 if (!isInList) {
+//        		 CmdRegister c = new CmdRegister();
+//        		 c.start();
+//        	 }
+        	 
+        	 
+//        	 if (GlobalValue.canStartCmdRegister) {
+//        		 System.out.println("Before Cmd");
+//        		 //CmdRegister c = new CmdRegister();
+//        		 //c.start();
+//        	 }
         	 //System.out.println("The ID is :" + s);
     		 		 
     		 }
@@ -34,8 +50,12 @@ class CmdRegister extends Thread {
 	public CmdRegister() throws Exception {
 		System.out.println("In Cmd");
 		ClientImpl impl = new ClientImpl();
-		LocateRegistry.createRegistry(8888);
-		Naming.rebind("CMD", impl);
+		
+		 Registry registry = LocateRegistry.getRegistry();
+	     registry.bind("CMDDD", impl);
+	     
+//		LocateRegistry.createRegistry(8888);
+//		Naming.rebind("CMD", impl);
 		System.out.println("Cmd Start!");
 		GlobalValue.canStartCmd = true;
 	}

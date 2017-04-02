@@ -1,9 +1,16 @@
 
 import java.rmi.*;
+import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.server.UnicastRemoteObject;
+
 import java.rmi.server.*;
 import java.util.ArrayList;
-public class Server {
+import java.rmi.server.UnicastRemoteObject;
+
+
+
+public class Server implements Remote {
  public static void main(String args[]) throws Exception {
 	 
 	 AgentMonitor m = new AgentMonitor();
@@ -11,10 +18,17 @@ public class Server {
 
 	 
 	 System.out.println("Before Start!");
-	 ServiceImpl impl = new ServiceImpl();
-	 //LocateRegistry.createRegistry(7654);
-	 Naming.rebind("LISTENER", impl);
-	 System.out.println("Start!");
+	 
+		 
+		 ServiceImpl impl = new ServiceImpl();
+		 Registry registry = LocateRegistry.getRegistry();
+	     registry.bind("BBBLISTENER", impl);
+//		 //LocateRegistry.createRegistry(8769);
+//		 Naming.rebind("LISTENER", impl);
+		 System.out.println("Start!");
+	 
+
+	 
  }
 }
 
