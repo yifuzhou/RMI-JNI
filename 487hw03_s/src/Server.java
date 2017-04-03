@@ -11,19 +11,21 @@ import java.rmi.server.UnicastRemoteObject;
 public class Server implements Remote {
 	public static void main(String args[]) throws Exception {
 		//create a agent monitor to detect beacon
-		AgentMonitor m = new AgentMonitor();
-		m.start();
+		//AgentMonitor m = new AgentMonitor();
+		//m.start();
 
 		System.out.println("Waiting Server to register...");
 
 		//Server registers
+		try {
 		ServiceImpl impl = new ServiceImpl();
 		Naming.rebind("LISTENER", impl);
-//		ServiceImpl impl = new ServiceImpl();
-//		Registry registry = LocateRegistry.getRegistry();
-//		registry.bind("BLISTENER", impl);
 
 		System.out.println("You can start Clients now!");
+		}
+		catch (Exception e) {
+		      e.printStackTrace();
+		    }
 	}
 }
 
@@ -31,7 +33,7 @@ class GlobalValue {
 	private GlobalValue() {
 	};
 
-	static ArrayList<Integer> BeaconList = new ArrayList<Integer>();
+	static ArrayList<Beacon> BeaconList = new ArrayList<Beacon>();
 	static ArrayList<Integer> BeaconTimeRecorder = new ArrayList<Integer>();
 	static int std_TimeRecorder = 0;
 	static boolean canStartCmd = false;

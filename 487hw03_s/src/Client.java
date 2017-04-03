@@ -8,51 +8,47 @@ import java.util.ArrayList;
 
 public class Client {
 	public static void main(String args[]) throws Exception {
-		String port = args[0];
-		// String port = "22";
+//		String port = args[0];
+//		// String port = "22";
+//
+//		int beacon = Integer.parseInt(port);
+		
+		Beacon b = new Beacon();
+		b.setID(Integer.parseInt(args[0]));
+	    b.setCmdAgent(args[1]);
 
-		int beacon = Integer.parseInt(port);
-
+	    try {
 		ClientImpl impl = new ClientImpl();
 		Registry registry = LocateRegistry.getRegistry();
-		registry.bind("CMDER", impl);
+		registry.bind(b.CmdAgentID, impl);
 		System.out.println("Cmd Start!");
+	    }
+	    catch (Exception e) {
+	        e.printStackTrace();
+	      }
 
 		while (true) {
+			try {
 			IService obj = (IService) Naming.lookup("LISTENER");
 			
-			boolean isInList = obj.BeaconListener(beacon);
-
-			// System.out.println("This is isInList :" + isInList);
-
-			// System.out.println(GlobalValue.canStartCmdRegister);
-			// if (!isInList) {
-			// CmdRegister c = new CmdRegister();
-			// c.start();
-			// }
-
-			// if (GlobalValue.canStartCmdRegister) {
-			// System.out.println("Before Cmd");
-			// //CmdRegister c = new CmdRegister();
-			// //c.start();
-			// }
-			// System.out.println("The ID is :" + s);
+			boolean isInList = obj.BeaconListener(b);
+			}
+			catch (Exception e) {
+			      e.printStackTrace();
+			    }
 
 		}
 
 	}
 }
 
-class CmdRegister extends Thread {
-	public CmdRegister() throws Exception {
-		System.out.println("In Cmd");
-		ClientImpl impl = new ClientImpl();
-
-		Registry registry = LocateRegistry.getRegistry();
-		registry.bind("CMD", impl);
-
-		System.out.println("Cmd Start!");
-	}
-
-}
-    
+//class CmdRegister extends Thread {
+//	public CmdRegister() throws Exception {
+//		ClientImpl impl = new ClientImpl();
+//		Registry registry = LocateRegistry.getRegistry();
+//		registry.bind("CMDER", impl);
+//		System.out.println("Cmd Start!");
+//		while (true);
+//	}
+//}
+//    
