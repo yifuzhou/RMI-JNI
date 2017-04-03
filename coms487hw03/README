@@ -1,0 +1,40 @@
+@author Yifu Zhou
+Compile it:
+Step 1:
+$ javac *.java
+Step 2:
+$ javah ClientImpl
+Step 3: compile C file with jni.h
+first find out your computer jni.h location
+you can input:
+$ locate jni.h
+Then
+$ gcc -v -c -fPIC -I<your jni.h location> Client.c -o Client.o
+My computer is :
+$ gcc -v -c -fPIC -I/System/Library/Frameworks/JavaVM.framework/Versions/A/Headers/ Client.c -o Client.o
+Step 4:
+$ libtool -dynamic -lSystem libClient.o -o libClient.dylib
+
+Then you finish compile .c file
+
+Step 5:
+$ rmiregistry
+Step 6:
+$ rmic ServiceImpl
+$ rmic ClientImpl
+
+Finish!!
+
+Run:
+$ java Server
+
+open another console
+$ java Client <ID> <Register Port>
+for example:
+$ java Client 15 4321
+$ java Client 16 8888
+
+If you close one client, then after 20 seconds the server will output this client is dead.
+
+Enjoy it! 
+
